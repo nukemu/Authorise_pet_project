@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang='ru'>
+<head>
+    <link rel="stylesheet" href="login.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Авторизация</title>
+</head>
+<body>
+    <video autoplay loop muted playsinline>
+        <source src="../../video/ingame.mp4" type="video/mp4">
+    </video>
+
+    <div class="login-container">
+        <h2>Авторизация</h2>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username">Имя пользователя</label>
+                <input type="text" id="username" name="username" placeholder="Введите имя пользователя" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Пароль</label>
+                <input type="password" id="password" name="password" placeholder="Введите пароль" required>
+            </div>
+            <button type="submit" class="login-btn">Войти</button>
+        </form>
+        <div class="register-link">
+            Нет аккаунта? <a href="../Registration/registr.html">Зарегистрироваться</a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+        
+            try {
+                const response = await fetch("http://localhost:8000/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        username: username,
+                        password: password
+                    }),
+                });
+        
+                const result = await response.json();
+                alert(result.message);
+                
+                if (response.ok) {
+                    window.location.href = "../Mainstr/main.html";
+                }
+            } catch (error) {
+                alert("Ошибка: " + error.message);
+            }
+        });
+    </script>
+</body>
+</html>
