@@ -39,7 +39,8 @@ async def select_data(username: str, password: str):
             )
 
         else:
-            await insert_data(username, password)
+            return await insert_data(username, password)
+
         
         
 async def check_user(username: str, password: str):

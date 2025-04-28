@@ -1,18 +1,17 @@
 <!DOCTYPE html>
-<html lang='ru'>
+<html lang="ru">
 <head>
     <link rel="stylesheet" href="login.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Авторизация</title>
+    <title>Вход</title>
 </head>
 <body>
-    <video autoplay loop muted playsinline>
-        <source src="../../video/ingame.mp4" type="video/mp4">
+    <video autoplay loop muted>
+        <source src="../../videos/snowfall.mp4" type="video/mp4">
     </video>
-
     <div class="login-container">
-        <h2>Авторизация</h2>
+        <h2>Вход</h2>
         <form id="loginForm">
             <div class="form-group">
                 <label for="username">Имя пользователя</label>
@@ -25,7 +24,7 @@
             <button type="submit" class="login-btn">Войти</button>
         </form>
         <div class="register-link">
-            Нет аккаунта? <a href="../Registration/registr.html">Зарегистрироваться</a>
+            Нет аккаунта? <a href="../Register/registr.html">Зарегистрироваться</a>
         </div>
     </div>
 
@@ -47,15 +46,17 @@
                         password: password
                     }),
                 });
-        
+
                 const result = await response.json();
-                alert(result.message);
                 
-                if (response.ok) {
-                    window.location.href = "../Mainstr/main.html";
+                if (!response.ok) {
+                    throw new Error(result.detail || "Ошибка входа");
                 }
+
+                alert(result.message || "Вход выполнен!");
+                window.location.href = "../Mainstr/main.html";
             } catch (error) {
-                alert("Ошибка: " + error.message);
+                alert(error.message);
             }
         });
     </script>

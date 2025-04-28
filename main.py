@@ -12,7 +12,8 @@ app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_methods=["POST", "GET", "OPTIONS"],
+    allow_credentials=True,
+    allow_methods=["*"],
     allow_headers=["*"],
 )
 
@@ -25,7 +26,7 @@ async def register(user_data: UserRegister):
 
 @app.post("/login")
 async def login(user_data: UserLogin):
-    await check_user(user_data.username, user_data.password)
+    return await check_user(user_data.username, user_data.password)
 
 
 if __name__ == "__main__":
