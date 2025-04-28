@@ -23,8 +23,6 @@ async def register(user_data: UserRegister):
     return {"message": result["message"]}
 
 
-
-
 @app.post("/login")
 async def login(user_data: UserLogin):
 
