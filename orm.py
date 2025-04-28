@@ -33,10 +33,13 @@ async def select_data(username: str, password: str):
         user = result.scalar_one_or_none()
         
         if user:
-            return {"message": "User with this nickname have"}
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="User with this nickname already exists"
+            )
+
         else:
             await insert_data(username, password)
-            return {"message": "User with this nickname havnt"}
         
         
 async def check_user(username: str, password: str):

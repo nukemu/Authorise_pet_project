@@ -1,7 +1,7 @@
 import asyncio
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from orm import select_data, create_tables
+from orm import select_data, create_tables, check_user
 from database import engine
 from models import UserRegister, UserLogin
 import uvicorn
@@ -25,9 +25,7 @@ async def register(user_data: UserRegister):
 
 @app.post("/login")
 async def login(user_data: UserLogin):
-
-    return {"message": "Добро пожаловать!"}
-
+    await check_user(user_data.username, user_data.password)
 
 
 if __name__ == "__main__":
