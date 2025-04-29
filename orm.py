@@ -9,11 +9,11 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 async def create_tables(engine):
-    engine.echo = False
+    engine.echo = True
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.drop_all)
         await conn.run_sync(Base.metadata.create_all)
-    engine.echo = True
+    engine.echo = False
     
 
 async def insert_data(username: str, password: str):
