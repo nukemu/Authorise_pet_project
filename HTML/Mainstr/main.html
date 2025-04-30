@@ -108,11 +108,8 @@
             try {
                 const response = await fetch(`${API_BASE_URL}/entries/`, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ text: text }),
-                    credentials: 'include' // Для работы с куками (если есть авторизация)
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text: text })
                 });
                 
                 if (!response.ok) {
@@ -123,8 +120,8 @@
                 messageDiv.textContent = 'Запись успешно добавлена!';
                 messageDiv.className = 'success';
                 
-                // Обновляем список записей
-                loadEntries();
+                // Явно обновляем список записей
+                await loadEntries();
                 
             } catch (error) {
                 messageDiv.textContent = error.message;
@@ -135,9 +132,7 @@
         
         async function loadEntries() {
             try {
-                const response = await fetch(`${API_BASE_URL}/entries/`, {
-                    credentials: 'include' // Для работы с куками (если есть авторизация)
-                });
+                const response = await fetch(`${API_BASE_URL}/entries/`);
                 
                 if (!response.ok) {
                     throw new Error('Ошибка при загрузке записей');
@@ -148,7 +143,7 @@
                 
                 entriesList.innerHTML = '';
                 
-                if (entries.length === 0) {
+                if (!entries || entries.length === 0) {
                     entriesList.innerHTML = '<p>Пока нет записей</p>';
                     return;
                 }
@@ -157,7 +152,8 @@
                     const entryDiv = document.createElement('div');
                     entryDiv.className = 'entry';
                     
-                    const date = new Date(entry.created_ad);
+                    // Исправлено: используем created_at вместо created_ad
+                    const date = new Date(entry.created_at);
                     const formattedDate = date.toLocaleString('ru-RU');
                     
                     entryDiv.innerHTML = `
@@ -167,16 +163,12 @@
                     
                     entriesList.appendChild(entryDiv);
                 });
-                
             } catch (error) {
                 console.error('Ошибка:', error);
                 document.getElementById('entries-list').innerHTML = 
                     '<p class="error">Не удалось загрузить записи</p>';
             }
         }
-        
-        // Загружаем записи при загрузке страницы
-        document.addEventListener('DOMContentLoaded', loadEntries);
     </script>
 </body>
 </html>
